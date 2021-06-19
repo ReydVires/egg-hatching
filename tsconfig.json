@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "allowJs": true,
+    "checkJs": true,
+    "outDir": "temp/tsc/",
+    "strict": true,
+    "typeRoots": [ /* List of folders to include type definitions from. */
+      "./node_modules/phaser/types",
+      "./src/def"
+    ],
+    "types": [ /* Type declaration files to be included in compilation. */
+      "phaser",
+    ],
+    "strictNullChecks": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+  },
+  "exclude": [
+		"node_modules"
+	],
+  "include": [
+    "src/**/*.js"
+  ]
+}

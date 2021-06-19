@@ -1,0 +1,6 @@
+{
+	"BASE_ASSET_URL": ".",
+	"ENABLE_LOG": true,
+	"SHOW_DEBUG_LAYER": true,
+	"MODE": "DEFAULT"
+}
