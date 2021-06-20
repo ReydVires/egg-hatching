@@ -37,14 +37,14 @@ export const Assets = {
 		url: "/img/img_lamp.png",
 		type: AssetType.STATIC
 	},
-	clock: {
-		key: "ui_clock",
-		url: "/img/ui/img_ui_clock.png",
+	hud: {
+		key: "ui_hud",
+		url: "/img/ui/img_ui_hud.png",
 		type: AssetType.STATIC
 	},
-	energy: {
-		key: "ui_energy",
-		url: "/img/ui/img_ui_energy.png",
+	progress_bar: {
+		key: "ui_progress_bar",
+		url: "/img/ui/img_ui_progress_bar.png",
 		type: AssetType.STATIC
 	},
 	btn: {
