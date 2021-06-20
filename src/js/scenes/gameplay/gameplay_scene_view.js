@@ -17,6 +17,15 @@ export class GameplaySceneView {
 	/** @private @type {ScreenUtility} */
 	_screenUtil;
 
+	// Experiment
+	/** @private @type {number} */
+	_payPoint;
+
+	/** @private @readonly */
+	_evenNames = {
+		FILL_PROGRESS_BAR: "FILL_PROGRESS_BAR",
+	};
+
 	/**
 	 * @param {Phaser.Scene} scene
 	 */
@@ -71,24 +80,35 @@ export class GameplaySceneView {
 		//#endregion
 
 		addAnimation(this._scene, Animations.char_idle);
+		addAnimation(this._scene, Animations.char_excited);
+
 		char.gameObject.play(Animations.char_idle.key);
 
+		this._payPoint = 100;
+		
 		const playBtn = new Image(this._scene, centerX, screenHeight * 0.9, Assets.btn.key);
 		playBtn.transform.setToScaleDisplaySize(baseRatio * 0.5);
-		
-		playBtn.gameObject.setInteractive({ useHandCursor: true })
-			.on(Phaser.Input.Events.POINTER_DOWN, () => {
-				console.log("Click!");
-			});
 
 		const playBtnLabelPosition = playBtn.transform.getDisplayPositionFromCoordinate(0.5, 0.5);
-		const playBtnLabel = new Text(this._scene, playBtnLabelPosition.x, playBtnLabelPosition.y, "100", {
+		const playBtnLabel = new Text(this._scene, playBtnLabelPosition.x, playBtnLabelPosition.y, String(this._payPoint), {
 			align: "center",
 			fontFamily: FontAsset.cabin.key,
 			fontStyle: "bold",
 			fontSize: `${72 * playBtn.transform.displayToOriginalHeightRatio}px`,
 		});
 		playBtnLabel.gameObject.setOrigin(0.5);
+
+		const electricityBigPos = playBtn.transform.getDisplayPositionFromCoordinate(0.7, 0);
+		const electricityBig = new Sprite(this._scene, electricityBigPos.x, electricityBigPos.y, Assets.electricity.key, 0);
+		electricityBig.gameObject.setOrigin(0.5, 1).setVisible(false);
+		electricityBig.transform.setToScaleDisplaySize(hatchNest.transform.displayToOriginalHeightRatio * 0.5);
+
+		addAnimation(this._scene, Animations.electricity);
+
+		electricityBig.gameObject.on("animationcomplete-" + Animations.electricity.key, () => {
+			electricityBig.gameObject.setVisible(false);
+			this._event.emit(this._evenNames.FILL_PROGRESS_BAR);
+		});
 
 		const hud = new Image(this._scene, centerX, 0, Assets.hud.key);
 		hud.transform.setDisplayWidthAsScreenWidth(true);
@@ -99,20 +119,31 @@ export class GameplaySceneView {
 		eggProgressBar.transform.setToScaleDisplaySize(hud.transform.displayToOriginalHeightRatio);
 		eggProgressBar.gameObject.setOrigin(0, 0.5);
 
-		// TODO: Create fill behavior
 		const progressBar = this._scene.add.graphics().setVisible(false);
 		eggProgressBar.gameObject.setMask(progressBar.createGeometryMask());
 
-		progressBar.clear();
-		const value = 0.85;
-
-		progressBar.fillStyle(0xffffff, 1);
-		progressBar.fillRect(
-			eggProgressBar.gameObject.getTopLeft().x,
-			eggProgressBar.gameObject.getTopLeft().y,
-			value * eggProgressBar.gameObject.displayWidth,
-			eggProgressBar.gameObject.displayHeight
-		);
+		this._event.on(this._evenNames.FILL_PROGRESS_BAR, () => {
+			this._scene.tweens.addCounter({
+				from: 0,
+				to: 1,
+				duration: 600,
+				ease: Phaser.Math.Easing.Cubic.InOut,
+				onUpdate: (tween) => {
+					const value = tween.getValue();
+					progressBar.clear();
+					progressBar.fillStyle(0xffffff, 1);
+					progressBar.fillRect(
+						eggProgressBar.gameObject.getTopLeft().x,
+						eggProgressBar.gameObject.getTopLeft().y,
+						value * eggProgressBar.gameObject.displayWidth,
+						eggProgressBar.gameObject.displayHeight
+					);
+				},
+				onComplete: () => {
+					char.gameObject.play(Animations.char_excited.key);
+				}
+			});
+		});
 
 		//#region Play button effect
 		const playBtnOriginScale = playBtn.gameObject.scale;
@@ -122,7 +153,8 @@ export class GameplaySceneView {
 			props: {
 				scale: {
 					getStart: () => playBtnOriginScale,
-					getEnd: () => playBtnOriginScale * 1.02 }
+					getEnd: () => playBtnOriginScale * 1.02
+				}
 			},
 			yoyo: true,
 			ease: Phaser.Math.Easing.Cubic.InOut,
@@ -131,10 +163,10 @@ export class GameplaySceneView {
 		playBtnTween.play();
 
 		const targetToEffect = playBtn.gameObject;
-		const glowDimGrapic = this._scene.add.graphics();
-		glowDimGrapic.clear();
-		glowDimGrapic.fillStyle(0xfafafa, 1);
-		glowDimGrapic.fillRoundedRect(
+		const glowDimGrapics = this._scene.add.graphics();
+		glowDimGrapics.clear();
+		glowDimGrapics.fillStyle(0xfafafa, 1);
+		glowDimGrapics.fillRoundedRect(
 			targetToEffect.x - (targetToEffect.displayWidth / 2),
 			targetToEffect.y - (targetToEffect.displayHeight / 2),
 			targetToEffect.displayWidth,
@@ -142,8 +174,8 @@ export class GameplaySceneView {
 			30 * baseRatio
 		);
 
-		const glowDimGrapicTween = this._scene.tweens.create({
-			targets: [glowDimGrapic],
+		const idleGlowDimTween = this._scene.tweens.create({
+			targets: [glowDimGrapics],
 			props: {
 				alpha: { getStart: () => 0, getEnd: () => 0.25 }
 			},
@@ -152,7 +184,43 @@ export class GameplaySceneView {
 			duration: 600,
 			ease: Phaser.Math.Easing.Cubic.InOut,
 		});
-		glowDimGrapicTween.play();
+		idleGlowDimTween.play();
+
+		const tapEffectTween = this._scene.tweens.create({
+			targets: [playBtn.gameObject],
+			props: {
+				scale: {
+					getStart: () => playBtnOriginScale,
+					getEnd: () => playBtnOriginScale * 0.95
+				}
+			},
+			yoyo: true,
+			duration: 120,
+			onComplete: () => {
+				this._scene.tweens.addCounter({
+					from: this._payPoint,
+					to: 0,
+					duration: 300,
+					onUpdate: (tween) => {
+						const value = Math.floor(tween.getValue());
+						playBtnLabel.gameObject.setText(String(value));
+					},
+					onComplete: () => {
+						playBtn.gameObject.setTexture(Assets.btn_gray.key);
+					},
+				});
+			},
+		});
+
+		playBtn.gameObject.setInteractive({ useHandCursor: true }).on(Phaser.Input.Events.POINTER_DOWN, () => {
+			this.lockInput();
+			tapEffectTween.play();
+
+			electricityBig.gameObject.setVisible(true).play(Animations.electricity.key);
+			glowDimGrapics.clear();
+			idleGlowDimTween.stop();
+			playBtnTween.stop();
+		});
 		//#endregion
 
 		if (CONFIG.MODE === "PRODUCTION") return;
@@ -161,6 +229,13 @@ export class GameplaySceneView {
 			fontSize: `${18 * baseRatio}px`
 		});
 		versionDebug.gameObject.setOrigin(0, 1);
+	}
+
+	/**
+	 * @param {boolean} [lock]
+	 */
+	lockInput (lock = true) {
+		this._scene.input.enabled = !lock;
 	}
 
 }
