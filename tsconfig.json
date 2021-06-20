@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es2017",
     "module": "commonjs",
     "allowJs": true,
     "checkJs": true,
@@ -11,7 +11,7 @@
       "./src/def"
     ],
     "types": [ /* Type declaration files to be included in compilation. */
-      "phaser",
+      "phaser"
     ],
     "strictNullChecks": false,
     "esModuleInterop": true,
@@ -21,6 +21,7 @@
 		"node_modules"
 	],
   "include": [
-    "src/**/*.js"
+    "src/**/*.js",
+    "src/**/*.d.ts"
   ]
 }
