@@ -12,5 +12,23 @@ export const Animations = {
 		frameSpeed: 18,
 		loop: true
 	},
+	char_excited: {
+		key: "char_excited",
+		type: AssetType.ANIMATION,
+		spritesheetRef: Assets.char_excited.key,
+		start: 0,
+		end: 33,
+		frameSpeed: 24,
+		loop: true
+	},
+	electricity: {
+		key: "electricity",
+		type: AssetType.ANIMATION,
+		spritesheetRef: Assets.electricity.key,
+		start: 0,
+		end: 7,
+		frameSpeed: 12,
+		loop: false
+	},
 
 };
