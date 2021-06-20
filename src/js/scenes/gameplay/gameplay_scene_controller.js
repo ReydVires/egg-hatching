@@ -16,10 +16,8 @@ export class GameplaySceneController extends Phaser.Scene {
 	}
 
 	create () {
-		Promise.all([
-			ScreenUtility.getInstance().init(this),
-		])
-		.then(() => {
+		const screenUtilInit = ScreenUtility.getInstance().init(this);
+		screenUtilInit.then(() => {
 			this.view.create();
 		})
 		.catch((error) => Error(`${SceneKeyInfo.GAMEPLAY}::\n` + error));

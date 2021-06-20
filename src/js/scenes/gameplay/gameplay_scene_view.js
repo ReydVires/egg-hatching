@@ -1,8 +1,10 @@
 import { Animations } from "../../assetLibrary/animations";
 import { Assets } from "../../assetLibrary/assetGameplay";
+import { FontAsset } from "../../assetLibrary/assetFont";
 import { Image } from "../../modules/gameobjects/image";
 import { ScreenUtility } from "../../helper/screenUtility";
 import { Sprite } from "../../modules/gameobjects/sprite";
+import { Text } from "../../modules/gameobjects/text";
 import { addAnimation } from "../../helper/animationHelper";
 
 export class GameplaySceneView {
@@ -55,6 +57,9 @@ export class GameplaySceneView {
 		egg.transform.setToScaleDisplaySize(baseRatio * 1.25);
 		egg.gameObject.setOrigin(0.5, 1);
 
+		const char = new Sprite(this._scene, centerX * 0.5, centerY * 1.15, Assets.char_idle.key, 0);
+		char.transform.setToScaleDisplaySize(baseRatio * 1.5);
+
 		const leafLeft = new Image(this._scene, 0, screenHeight, Assets.leaf.key);
 		leafLeft.transform.setToScaleDisplaySize(baseRatio * 1.25);
 		leafLeft.gameObject.setOrigin(0, 1);
@@ -64,11 +69,19 @@ export class GameplaySceneView {
 		leafRight.gameObject.setOrigin(1, 1).setFlipX(true);
 		//#endregion
 
-		const char = new Sprite(this._scene, centerX * 0.5, centerY * 1.15, Assets.char_idle.key, 0);
-		char.transform.setToScaleDisplaySize(baseRatio * 1.5);
-
 		addAnimation(this._scene, Animations.char_idle);
 		char.gameObject.play(Animations.char_idle.key);
+
+		const playBtn = new Image(this._scene, centerX, screenHeight * 0.9, Assets.btn.key);
+		playBtn.transform.setToScaleDisplaySize(baseRatio * 0.5);
+
+		const playBtnLabelPosition = playBtn.transform.getDisplayPositionFromCoordinate(0.5, 0.5);
+		const playBtnLabel = new Text(this._scene, playBtnLabelPosition.x, playBtnLabelPosition.y, "100", {
+			align: "center",
+			fontFamily: FontAsset.cabin.key,
+			fontSize: `${52 * baseRatio}px`
+		});
+		playBtnLabel.gameObject.setOrigin(0.5);
 	}
 
 }
