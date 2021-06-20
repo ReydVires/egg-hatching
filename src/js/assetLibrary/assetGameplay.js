@@ -38,13 +38,18 @@ export const Assets = {
 		type: AssetType.STATIC
 	},
 	clock: {
-		key: "clock",
-		url: "/img/ui/img_clock.png",
+		key: "ui_clock",
+		url: "/img/ui/img_ui_clock.png",
 		type: AssetType.STATIC
 	},
 	energy: {
-		key: "energy",
-		url: "/img/ui/img_energy.png",
+		key: "ui_energy",
+		url: "/img/ui/img_ui_energy.png",
+		type: AssetType.STATIC
+	},
+	btn: {
+		key: "ui_btn",
+		url: "/img/ui/img_ui_btn.png",
 		type: AssetType.STATIC
 	},
 	// SPRITESHEET
