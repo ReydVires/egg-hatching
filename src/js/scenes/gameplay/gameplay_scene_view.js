@@ -86,11 +86,33 @@ export class GameplaySceneView {
 			align: "center",
 			fontFamily: FontAsset.cabin.key,
 			fontStyle: "bold",
-			fontSize: `${38 * baseRatio}px`,
+			fontSize: `${72 * playBtn.transform.displayToOriginalHeightRatio}px`,
 		});
 		playBtnLabel.gameObject.setOrigin(0.5);
 
-		// TODO: Create Hud progress
+		const hud = new Image(this._scene, centerX, 0, Assets.hud.key);
+		hud.transform.setDisplayWidthAsScreenWidth(true);
+		hud.gameObject.setOrigin(0.5, 0);
+
+		const eggProgressBarPos = hud.transform.getDisplayPositionFromCoordinate(0.173, 0.61);
+		const eggProgressBar = new Image(this._scene, eggProgressBarPos.x, eggProgressBarPos.y, Assets.progress_bar.key);
+		eggProgressBar.transform.setToScaleDisplaySize(hud.transform.displayToOriginalHeightRatio);
+		eggProgressBar.gameObject.setOrigin(0, 0.5);
+
+		// TODO: Create fill behavior
+		const progressBar = this._scene.add.graphics().setVisible(false);
+		eggProgressBar.gameObject.setMask(progressBar.createGeometryMask());
+
+		progressBar.clear();
+		const value = 0.85;
+
+		progressBar.fillStyle(0xffffff, 1);
+		progressBar.fillRect(
+			eggProgressBar.gameObject.getTopLeft().x,
+			eggProgressBar.gameObject.getTopLeft().y,
+			value * eggProgressBar.gameObject.displayWidth,
+			eggProgressBar.gameObject.displayHeight
+		);
 
 		//#region Play button effect
 		const playBtnOriginScale = playBtn.gameObject.scale;
