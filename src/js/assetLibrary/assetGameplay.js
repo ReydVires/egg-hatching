@@ -52,12 +52,31 @@ export const Assets = {
 		url: "/img/ui/img_ui_btn.png",
 		type: AssetType.STATIC
 	},
+	btn_gray: {
+		key: "ui_btn_gray",
+		url: "/img/ui/img_ui_btn_gray.png",
+		type: AssetType.STATIC
+	},
 	// SPRITESHEET
 	char_idle: {
 		key: "char_idle",
 		url: "/img/spr_char_idle.png",
 		width: 7200/24,
 		height: 300,
+		type: AssetType.SPRITESHEET
+	},
+	char_excited: {
+		key: "char_excited",
+		url: "/img/spr_char_excited.png",
+		width: 10200/34,
+		height: 300,
+		type: AssetType.SPRITESHEET
+	},
+	electricity: {
+		key: "electricity",
+		url: "/img/effect/spr_electricity.png",
+		width: 2800/8,
+		height: 540,
 		type: AssetType.SPRITESHEET
 	},
 
