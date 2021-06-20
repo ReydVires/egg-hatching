@@ -44,7 +44,7 @@ const renderType = isFirefox ? Phaser.WEBGL : Phaser.CANVAS;
 
 /** @type {Phaser.Types.Core.GameConfig} */
 const gameConfig = {
-	version: "1.0.0",
+	version: CONFIG.VERSION,
 	banner: { hidePhaser: !CONFIG.ENABLE_LOG },
 	type: renderType,
 	parent: 'game',
@@ -75,7 +75,7 @@ const gameConfig = {
 const game = new Phaser.Game(gameConfig);
 
 window.addEventListener("load", () => {
-	// Register resize hanler event
+	// Register resize handler event
 	/** @type {number} */
 	let execResize;
 	const resizeEndEvent = new Event('resizeEnd');

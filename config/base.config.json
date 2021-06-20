@@ -2,5 +2,6 @@
 	"BASE_ASSET_URL": ".",
 	"ENABLE_LOG": true,
 	"SHOW_DEBUG_LAYER": true,
-	"MODE": "DEFAULT"
+	"MODE": "DEFAULT",
+	"VERSION": "0.0.0"
 }

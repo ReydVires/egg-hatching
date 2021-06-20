@@ -1,7 +1,8 @@
 import { Assets as GameplayAssets } from "../../assetLibrary/assetGameplay";
 import { LoadingSceneView } from "./loading_scene_view";
 import { SceneKeyInfo } from "../../const/gameInfo";
-import { loadAssets } from "../../helper/loaderHelper";
+import { loadAssets, loadFonts } from "../../helper/loaderHelper";
+import { fontList } from "../../assetLibrary/assetFont";
 
 export class LoadingSceneController extends Phaser.Scene {
 
@@ -26,8 +27,13 @@ export class LoadingSceneController extends Phaser.Scene {
 		this.load.once("complete", this.onCompleteLoadBoot);
 
 		// LOAD LOADING ASSETS HERE!
-
-		this.load.start(); // Execute: onCompleteLoadBoot
+		Promise.all([
+			loadFonts(fontList()),
+		])
+		.then(() => {
+			this.load.start(); // Execute: onCompleteLoadBoot
+		})
+		.catch((error) => Error(`${SceneKeyInfo.LOADING}::\n` + error));
 	}
 
 	onCompleteLoadBoot () {

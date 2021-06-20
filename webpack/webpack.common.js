@@ -2,11 +2,13 @@ const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const version = require('../package.json').version;
 
 module.exports = (env) =>
 	new Promise((resolve, reject) => {
-		let baseConfig = require('../config/base.config.json');
-		let returnConfig = (finalConfigObject) => ({
+		const baseConfig = require('../config/base.config.json');
+		baseConfig.VERSION = version;
+		const returnConfig = (finalConfigObject) => ({
 			entry: {
 				app: path.resolve(__dirname, '../src/index.js')
 			},
@@ -36,7 +38,8 @@ module.exports = (env) =>
 					CONFIG: JSON.stringify(finalConfigObject)
 				}),
 				new HtmlWebpackPlugin({
-					template: './index.html'
+					template: './index.html',
+					favicon: path.resolve(__dirname, '../src/favicon.ico')
 				})
 			]
 		});
