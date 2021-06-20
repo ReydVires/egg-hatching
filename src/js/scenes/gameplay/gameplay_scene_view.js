@@ -1,5 +1,6 @@
 import { Animations } from "../../assetLibrary/animations";
 import { Assets } from "../../assetLibrary/assetGameplay";
+import { _CONFIG as CONFIG } from "../../const/gameInfo";
 import { FontAsset } from "../../assetLibrary/assetFont";
 import { Image } from "../../modules/gameobjects/image";
 import { ScreenUtility } from "../../helper/screenUtility";
@@ -74,14 +75,70 @@ export class GameplaySceneView {
 
 		const playBtn = new Image(this._scene, centerX, screenHeight * 0.9, Assets.btn.key);
 		playBtn.transform.setToScaleDisplaySize(baseRatio * 0.5);
+		
+		playBtn.gameObject.setInteractive({ useHandCursor: true })
+			.on(Phaser.Input.Events.POINTER_DOWN, () => {
+				console.log("Click!");
+			});
 
 		const playBtnLabelPosition = playBtn.transform.getDisplayPositionFromCoordinate(0.5, 0.5);
 		const playBtnLabel = new Text(this._scene, playBtnLabelPosition.x, playBtnLabelPosition.y, "100", {
 			align: "center",
 			fontFamily: FontAsset.cabin.key,
-			fontSize: `${52 * baseRatio}px`
+			fontStyle: "bold",
+			fontSize: `${38 * baseRatio}px`,
 		});
 		playBtnLabel.gameObject.setOrigin(0.5);
+
+		// TODO: Create Hud progress
+
+		//#region Play button effect
+		const playBtnOriginScale = playBtn.gameObject.scale;
+		const playBtnTween = this._scene.tweens.create({
+			targets: [playBtn.gameObject],
+			loop: -1,
+			props: {
+				scale: {
+					getStart: () => playBtnOriginScale,
+					getEnd: () => playBtnOriginScale * 1.02 }
+			},
+			yoyo: true,
+			ease: Phaser.Math.Easing.Cubic.InOut,
+			duration: 300,
+		});
+		playBtnTween.play();
+
+		const targetToEffect = playBtn.gameObject;
+		const glowDimGrapic = this._scene.add.graphics();
+		glowDimGrapic.clear();
+		glowDimGrapic.fillStyle(0xfafafa, 1);
+		glowDimGrapic.fillRoundedRect(
+			targetToEffect.x - (targetToEffect.displayWidth / 2),
+			targetToEffect.y - (targetToEffect.displayHeight / 2),
+			targetToEffect.displayWidth,
+			targetToEffect.displayHeight,
+			30 * baseRatio
+		);
+
+		const glowDimGrapicTween = this._scene.tweens.create({
+			targets: [glowDimGrapic],
+			props: {
+				alpha: { getStart: () => 0, getEnd: () => 0.25 }
+			},
+			yoyo: true,
+			loop: -1,
+			duration: 600,
+			ease: Phaser.Math.Easing.Cubic.InOut,
+		});
+		glowDimGrapicTween.play();
+		//#endregion
+
+		if (CONFIG.MODE === "PRODUCTION") return;
+		const versionDebug = new Text(this._scene, 0, screenHeight, CONFIG.VERSION, {
+			fontFamily: FontAsset.arial.key,
+			fontSize: `${18 * baseRatio}px`
+		});
+		versionDebug.gameObject.setOrigin(0, 1);
 	}
 
 }
