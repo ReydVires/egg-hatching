@@ -24,6 +24,7 @@ export class GameplaySceneView {
 	/** @private @readonly */
 	_evenNames = {
 		FILL_PROGRESS_BAR: "FILL_PROGRESS_BAR",
+		SHOW_FLASHLIGHT: "SHOW_FLASHLIGHT",
 	};
 
 	/**
@@ -82,6 +83,11 @@ export class GameplaySceneView {
 		addAnimation(this._scene, Animations.char_idle);
 		addAnimation(this._scene, Animations.char_excited);
 
+		char.gameObject.on("animationcomplete-" + Animations.char_excited.key, () => {
+			char.gameObject.play(Animations.char_excited.key);
+			this._event.emit(this._evenNames.SHOW_FLASHLIGHT);
+		});
+
 		char.gameObject.play(Animations.char_idle.key);
 
 		this._payPoint = 100;
@@ -101,7 +107,7 @@ export class GameplaySceneView {
 		const electricityBigPos = playBtn.transform.getDisplayPositionFromCoordinate(0.7, 0);
 		const electricityBig = new Sprite(this._scene, electricityBigPos.x, electricityBigPos.y, Assets.electricity.key, 0);
 		electricityBig.gameObject.setOrigin(0.5, 1).setVisible(false);
-		electricityBig.transform.setToScaleDisplaySize(hatchNest.transform.displayToOriginalHeightRatio * 0.5);
+		electricityBig.transform.setToScaleDisplaySize(hatchNest.transform.displayToOriginalHeightRatio * 0.45);
 
 		addAnimation(this._scene, Animations.electricity);
 
@@ -222,6 +228,27 @@ export class GameplaySceneView {
 			playBtnTween.stop();
 		});
 		//#endregion
+
+		// Create Flashlight
+		const flashObject = this._scene.add.graphics().setAlpha(0).setVisible(false);
+		flashObject.fillStyle(0xfafafa, 1);
+		flashObject.fillRect(0, 0, screenWidth, screenHeight);
+
+		this._event.once(this._evenNames.SHOW_FLASHLIGHT, () => {
+			flashObject.setVisible(true);
+			this._scene.tweens.addCounter({
+				from: 0,
+				to: 1,
+				duration: 500,
+				onUpdate: (tween) => {
+					const value = tween.getValue();
+					flashObject.setAlpha(value);
+				},
+				onComplete: () => {
+					console.log("Call next state!");
+				},
+			});
+		});
 
 		if (CONFIG.MODE === "PRODUCTION") return;
 		const versionDebug = new Text(this._scene, 0, screenHeight, CONFIG.VERSION, {

@@ -19,7 +19,7 @@ export const Animations = {
 		start: 0,
 		end: 33,
 		frameSpeed: 24,
-		loop: true
+		loop: false
 	},
 	electricity: {
 		key: "electricity",
