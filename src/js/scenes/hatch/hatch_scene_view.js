@@ -156,7 +156,7 @@ export class HatchSceneView {
 		});
 		description.gameObject.setOrigin(0.5).setDepth(1.5);
 
-		const panelContainer = this._scene.add.container(centerX, (centerY * 0.9), [
+		const panelContainer = this._scene.add.container(centerX, (centerY * 0.8), [
 			popupPanel.gameObject,
 			popupLabel.gameObject,
 			description.gameObject,
@@ -202,7 +202,7 @@ export class HatchSceneView {
 			});
 			this._scene.tweens.add({
 				targets: [coin.gameObject],
-				y: (centerY * 0.75),
+				y: (centerY * 0.55),
 				duration: 500,
 				ease: Phaser.Math.Easing.Sine.Out,
 				onComplete: () => showPopupTween.play()
