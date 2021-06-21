@@ -12,18 +12,17 @@ export class GameplaySceneView {
 
 	/** @private @type {Phaser.Scene} */
 	_scene;
-	/** @private @type {Phaser.Events.EventEmitter} */
-	_event;
 	/** @private @type {ScreenUtility} */
 	_screenUtil;
 
-	// Experiment
-	/** @private @type {number} */
-	_payPoint;
-
-	/** @private @readonly */
-	_evenNames = {
+	/** @type {Phaser.Events.EventEmitter} */
+	event;
+	/** @readonly */
+	evenNames = {
 		FILL_PROGRESS_BAR: "FILL_PROGRESS_BAR",
+		SHOW_FLASHLIGHT: "SHOW_FLASHLIGHT",
+		GOTO_HATCH: "GOTO_HATCH",
+		LOCK_INPUT: "LOCK_INPUT",
 	};
 
 	/**
@@ -31,8 +30,8 @@ export class GameplaySceneView {
 	 */
 	constructor (scene) {
 		this._scene = scene;
-		this._event = new Phaser.Events.EventEmitter();
 		this._screenUtil = ScreenUtility.getInstance();
+		this.event = new Phaser.Events.EventEmitter();
 	}
 
 	create () {
@@ -82,15 +81,20 @@ export class GameplaySceneView {
 		addAnimation(this._scene, Animations.char_idle);
 		addAnimation(this._scene, Animations.char_excited);
 
+		char.gameObject.on("animationcomplete-" + Animations.char_excited.key, () => {
+			char.gameObject.play(Animations.char_excited.key);
+			this.event.emit(this.evenNames.SHOW_FLASHLIGHT);
+		});
+
 		char.gameObject.play(Animations.char_idle.key);
 
-		this._payPoint = 100;
+		const payPoint = 100;
 		
 		const playBtn = new Image(this._scene, centerX, screenHeight * 0.9, Assets.btn.key);
 		playBtn.transform.setToScaleDisplaySize(baseRatio * 0.5);
 
 		const playBtnLabelPosition = playBtn.transform.getDisplayPositionFromCoordinate(0.5, 0.5);
-		const playBtnLabel = new Text(this._scene, playBtnLabelPosition.x, playBtnLabelPosition.y, String(this._payPoint), {
+		const playBtnLabel = new Text(this._scene, playBtnLabelPosition.x, playBtnLabelPosition.y, String(payPoint), {
 			align: "center",
 			fontFamily: FontAsset.cabin.key,
 			fontStyle: "bold",
@@ -101,13 +105,13 @@ export class GameplaySceneView {
 		const electricityBigPos = playBtn.transform.getDisplayPositionFromCoordinate(0.7, 0);
 		const electricityBig = new Sprite(this._scene, electricityBigPos.x, electricityBigPos.y, Assets.electricity.key, 0);
 		electricityBig.gameObject.setOrigin(0.5, 1).setVisible(false);
-		electricityBig.transform.setToScaleDisplaySize(hatchNest.transform.displayToOriginalHeightRatio * 0.5);
+		electricityBig.transform.setToScaleDisplaySize(hatchNest.transform.displayToOriginalHeightRatio * 0.45);
 
 		addAnimation(this._scene, Animations.electricity);
 
 		electricityBig.gameObject.on("animationcomplete-" + Animations.electricity.key, () => {
 			electricityBig.gameObject.setVisible(false);
-			this._event.emit(this._evenNames.FILL_PROGRESS_BAR);
+			this.event.emit(this.evenNames.FILL_PROGRESS_BAR);
 		});
 
 		const hud = new Image(this._scene, centerX, 0, Assets.hud.key);
@@ -122,7 +126,7 @@ export class GameplaySceneView {
 		const progressBar = this._scene.add.graphics().setVisible(false);
 		eggProgressBar.gameObject.setMask(progressBar.createGeometryMask());
 
-		this._event.on(this._evenNames.FILL_PROGRESS_BAR, () => {
+		this.event.on(this.evenNames.FILL_PROGRESS_BAR, () => {
 			this._scene.tweens.addCounter({
 				from: 0,
 				to: 1,
@@ -198,7 +202,7 @@ export class GameplaySceneView {
 			duration: 120,
 			onComplete: () => {
 				this._scene.tweens.addCounter({
-					from: this._payPoint,
+					from: payPoint,
 					to: 0,
 					duration: 300,
 					onUpdate: (tween) => {
@@ -213,7 +217,8 @@ export class GameplaySceneView {
 		});
 
 		playBtn.gameObject.setInteractive({ useHandCursor: true }).on(Phaser.Input.Events.POINTER_DOWN, () => {
-			this.lockInput();
+			// this.lockInput();
+			this.event.emit(this.evenNames.LOCK_INPUT);
 			tapEffectTween.play();
 
 			electricityBig.gameObject.setVisible(true).play(Animations.electricity.key);
@@ -223,19 +228,27 @@ export class GameplaySceneView {
 		});
 		//#endregion
 
+		// Create Flashlight
+		const flashObject = this._scene.add.graphics().setAlpha(0).setVisible(false);
+		flashObject.fillStyle(0xfafafa, 1);
+		flashObject.fillRect(0, 0, screenWidth, screenHeight);
+
+		this.event.once(this.evenNames.SHOW_FLASHLIGHT, () => {
+			flashObject.setVisible(true);
+			this._scene.tweens.add({
+				targets: flashObject,
+				duration: 500,
+				alpha: 1,
+				onComplete: () => this.event.emit(this.evenNames.GOTO_HATCH),
+			});
+		});
+
 		if (CONFIG.MODE === "PRODUCTION") return;
 		const versionDebug = new Text(this._scene, 0, screenHeight, CONFIG.VERSION, {
 			fontFamily: FontAsset.arial.key,
 			fontSize: `${18 * baseRatio}px`
 		});
 		versionDebug.gameObject.setOrigin(0, 1);
-	}
-
-	/**
-	 * @param {boolean} [lock]
-	 */
-	lockInput (lock = true) {
-		this._scene.input.enabled = !lock;
 	}
 
 }
