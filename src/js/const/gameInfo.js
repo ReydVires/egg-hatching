@@ -5,4 +5,5 @@ export const _CONFIG = CONFIG;
 export const SceneKeyInfo = {
 	LOADING: "LoadingScene",
 	GAMEPLAY: "GameplayScene",
+	HATCH: "HatchScene",
 };

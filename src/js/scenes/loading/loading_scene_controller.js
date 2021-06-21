@@ -1,7 +1,9 @@
+import { loadAssets, loadFonts } from "../../helper/loaderHelper";
+
 import { Assets as GameplayAssets } from "../../assetLibrary/assetGameplay";
+import { Assets as HatchAssets } from "../../assetLibrary/assetHatch";
 import { LoadingSceneView } from "./loading_scene_view";
 import { SceneKeyInfo } from "../../const/gameInfo";
-import { loadAssets, loadFonts } from "../../helper/loaderHelper";
 import { fontList } from "../../assetLibrary/assetFont";
 
 export class LoadingSceneController extends Phaser.Scene {
@@ -50,6 +52,7 @@ export class LoadingSceneController extends Phaser.Scene {
 
 		// LOAD ALL GAME FILE HERE!
 		loadAssets(this, GameplayAssets);
+		loadAssets(this, HatchAssets);
 
 		this.load.start(); // Execute: onCompleteLoad
 	}
