@@ -2,6 +2,10 @@ import { GameplaySceneView } from "./gameplay_scene_view";
 import { SceneKeyInfo } from "../../const/gameInfo";
 import { ScreenUtility } from "../../helper/screenUtility";
 
+/**
+ * @typedef {(lock: boolean) => void} OnLockInput
+ */
+
 export class GameplaySceneController extends Phaser.Scene {
 
 	/** @type {GameplaySceneView} */
@@ -13,14 +17,18 @@ export class GameplaySceneController extends Phaser.Scene {
 
 	init () {
 		this.view = new GameplaySceneView(this);
+		ScreenUtility.getInstance().init(this);
+
+		this.onGotoHatch(() => {
+			this.scene.start(SceneKeyInfo.HATCH);
+		});
+		this.onLockInput((lock = true) => {
+			this.input.enabled = !lock;
+		})
 	}
 
 	create () {
-		const screenUtilInit = ScreenUtility.getInstance().init(this);
-		screenUtilInit.then(() => {
-			this.view.create();
-		})
-		.catch((error) => Error(`${SceneKeyInfo.GAMEPLAY}::\n` + error));
+		this.view.create();
 	}
 
 	/**
@@ -28,5 +36,19 @@ export class GameplaySceneController extends Phaser.Scene {
 	 * @param {number} dt
 	 */
 	update (time, dt) {}
+
+	/**
+	 * @param {Function} events
+	 */
+	onGotoHatch (events) {
+		this.view.event.once(this.view.evenNames.GOTO_HATCH, events)
+	}
+
+	/**
+	 * @param {OnLockInput} events
+	 */
+	onLockInput (events) {
+		this.view.event.on(this.view.evenNames.LOCK_INPUT, events)
+	}
 
 }
