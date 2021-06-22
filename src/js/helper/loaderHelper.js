@@ -1,5 +1,5 @@
 import { AssetType } from "../const/assetType";
-import { _CONFIG as CONFIG } from "../const/gameInfo";
+import { CONFIG } from "../const/gameInfo";
 
 /**
  * @typedef BaseAssetInfoType

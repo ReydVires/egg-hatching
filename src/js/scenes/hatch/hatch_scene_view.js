@@ -21,6 +21,10 @@ export class HatchSceneView {
 	evenNames = {
 		CALL_BUTTONS: "CALL_BUTTONS",
 		GOTO_GAMEPLAY: "GOTO_GAMEPLAY",
+		TAP_HATCH_BUTTON: "TAP_HATCH_BUTTON",
+		CALL_POPUP_PANEL: "CALL_POPUP_PANEL",
+		SHOW_ITEM_COIN: "SHOW_ITEM_COIN",
+		PLAY_SFX_BEEP: "PLAY_SFX_BEEP",
 	};
 
 	/**
@@ -164,7 +168,10 @@ export class HatchSceneView {
 
 		const showPopupTween = this._scene.tweens.create({
 			targets: [panelContainer],
-			onStart: () => panelContainer.setVisible(true),
+			onStart: () => {
+				panelContainer.setVisible(true);
+				// this.event.emit(this.evenNames.CALL_POPUP_PANEL);
+			},
 			props: {
 				scale: { getStart: () => 0.25, getEnd: () => 1 }
 			},
@@ -192,7 +199,10 @@ export class HatchSceneView {
 
 			// Coin sequence!
 			this._scene.tweens.add({
-				onStart: () => coin.gameObject.setVisible(true),
+				onStart: () => {
+					coin.gameObject.setVisible(true);
+					this.event.emit(this.evenNames.SHOW_ITEM_COIN);
+				},
 				targets: [coin.gameObject],
 				props: {
 					alpha: { getStart: () => 0.3, getEnd: () => 1 },
@@ -225,7 +235,8 @@ export class HatchSceneView {
 		hatchBtn.transform.setToScaleDisplaySize(popupPanel.transform.displayToOriginalHeightRatio);
 		hatchBtn.gameObject.setDepth(1.5).setVisible(false);
 
-		hatchBtn.gameObject.setInteractive({ useHandCursor: true }).once("pointerup", () => {
+		hatchBtn.gameObject.setInteractive({ useHandCursor: true }).once(Phaser.Input.Events.POINTER_DOWN, () => {
+			this.event.emit(this.evenNames.TAP_HATCH_BUTTON);
 			this._scene.tweens.add({
 				targets: hatchBtn.gameObject,
 				scale: hatchBtn.gameObject.scale * 0.96,
@@ -238,8 +249,12 @@ export class HatchSceneView {
 		});
 
 		const hatchBtnTween = this._scene.tweens.create({
-			onStart: () => hatchBtn.gameObject.setVisible(true),
+			onStart: () => {
+				hatchBtn.gameObject.setVisible(true);
+				this.event.emit(this.evenNames.CALL_POPUP_PANEL);
+			},
 			targets: hatchBtn.gameObject,
+			delay: 300,
 			duration: 500,
 			props: {
 				scale: { getStart: () => 0.1, getEnd: () => popupPanel.transform.displayToOriginalHeightRatio }
@@ -253,9 +268,12 @@ export class HatchSceneView {
 		tokoPointBtn.gameObject.setDepth(1.5).setVisible(false);
 
 		const tokoPointBtnTween = this._scene.tweens.create({
-			onStart: () => tokoPointBtn.gameObject.setVisible(true),
+			onStart: () => {
+				tokoPointBtn.gameObject.setVisible(true);
+				this.event.emit(this.evenNames.PLAY_SFX_BEEP);
+			},
 			targets: tokoPointBtn.gameObject,
-			delay: 300,
+			delay: 600,
 			duration: 500,
 			props: {
 				scale: { getStart: () => 0.1, getEnd: () => popupPanel.transform.displayToOriginalHeightRatio }

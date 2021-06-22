@@ -1,6 +1,6 @@
 import { Animations } from "../../assetLibrary/animations";
 import { Assets } from "../../assetLibrary/assetGameplay";
-import { _CONFIG as CONFIG } from "../../const/gameInfo";
+import { CONFIG } from "../../const/gameInfo";
 import { FontAsset } from "../../assetLibrary/assetFont";
 import { Image } from "../../modules/gameobjects/image";
 import { ScreenUtility } from "../../helper/screenUtility";
@@ -23,6 +23,7 @@ export class GameplaySceneView {
 		SHOW_FLASHLIGHT: "SHOW_FLASHLIGHT",
 		GOTO_HATCH: "GOTO_HATCH",
 		LOCK_INPUT: "LOCK_INPUT",
+		TAP_POINT_BUTTON: "TAP_POINT_BUTTON",
 	};
 
 	/**
@@ -216,8 +217,8 @@ export class GameplaySceneView {
 			},
 		});
 
-		playBtn.gameObject.setInteractive({ useHandCursor: true }).on(Phaser.Input.Events.POINTER_DOWN, () => {
-			// this.lockInput();
+		playBtn.gameObject.setInteractive({ useHandCursor: true }).on(Phaser.Input.Events.POINTER_UP, () => {
+			this.event.emit(this.evenNames.TAP_POINT_BUTTON);
 			this.event.emit(this.evenNames.LOCK_INPUT);
 			tapEffectTween.play();
 

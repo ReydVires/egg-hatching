@@ -1,6 +1,6 @@
 import "./css/index.css";
 
-import { _CONFIG as CONFIG } from "./js/const/gameInfo";
+import { CONFIG } from "./js/const/gameInfo";
 import { GameplaySceneController } from "./js/scenes/gameplay/gameplay_scene_controller";
 import { HatchSceneController } from "./js/scenes/hatch/hatch_scene_controller";
 import { LoadingSceneController } from "./js/scenes/loading/loading_scene_controller";

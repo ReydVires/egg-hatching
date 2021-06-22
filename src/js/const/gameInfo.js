@@ -1,5 +1,7 @@
 // @ts-ignore
-export const _CONFIG = CONFIG;
+const _CONFIG = CONFIG;
+
+export { _CONFIG as CONFIG };
 
 /** @readonly */
 export const SceneKeyInfo = {
