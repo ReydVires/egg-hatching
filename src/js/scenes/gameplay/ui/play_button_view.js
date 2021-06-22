@@ -3,7 +3,7 @@ import { FontAsset } from "../../../assetLibrary/assetFont";
 import { Image } from "../../../modules/gameobjects/image";
 import { ScreenUtility } from "../../../helper/screenUtility";
 import { Text } from "../../../modules/gameobjects/text";
-import { layerDepth } from "../misc/layer_depth";
+import { layerDepth } from "../info/layer_depth";
 
 export class PlayButtonUIView {
 

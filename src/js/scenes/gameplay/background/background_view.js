@@ -1,7 +1,7 @@
 import { Assets } from "../../../assetLibrary/assetGameplay";
 import { Image } from "../../../modules/gameobjects/image";
 import { ScreenUtility } from "../../../helper/screenUtility";
-import { layerDepth } from "../misc/layer_depth";
+import { layerDepth } from "../info/layer_depth";
 
 export class BackgroundView {
 

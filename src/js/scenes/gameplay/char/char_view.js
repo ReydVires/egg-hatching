@@ -3,7 +3,7 @@ import { Assets } from "../../../assetLibrary/assetGameplay";
 import { ScreenUtility } from "../../../helper/screenUtility";
 import { Sprite } from "../../../modules/gameobjects/sprite";
 import { addAnimation } from "../../../helper/animationHelper";
-import { layerDepth } from "../misc/layer_depth";
+import { layerDepth } from "../info/layer_depth";
 
 export class CharView {
 

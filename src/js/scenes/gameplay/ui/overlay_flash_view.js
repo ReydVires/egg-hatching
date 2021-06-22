@@ -1,5 +1,5 @@
 import { ScreenUtility } from "../../../helper/screenUtility";
-import { layerDepth } from "../misc/layer_depth";
+import { layerDepth } from "../info/layer_depth";
 
 export class OverlayFlashUIView {
 
