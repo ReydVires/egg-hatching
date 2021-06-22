@@ -1,6 +1,7 @@
 import { Animations } from "../../assetLibrary/animations";
 import { Assets as AssetGameplay } from "../../assetLibrary/assetGameplay";
 import { Assets } from "../../assetLibrary/assetHatch";
+import { Audios } from "../../assetLibrary/assetAudio";
 import { FontAsset } from "../../assetLibrary/assetFont";
 import { Image } from "../../modules/gameobjects/image";
 import { ScreenUtility } from "../../helper/screenUtility";
@@ -201,7 +202,7 @@ export class HatchSceneView {
 			this._scene.tweens.add({
 				onStart: () => {
 					coin.gameObject.setVisible(true);
-					this.event.emit(this.evenNames.SHOW_ITEM_COIN);
+					this.event.emit(this.evenNames.SHOW_ITEM_COIN, Audios.sfx_achievement.key);
 				},
 				targets: [coin.gameObject],
 				props: {
@@ -236,7 +237,7 @@ export class HatchSceneView {
 		hatchBtn.gameObject.setDepth(1.5).setVisible(false);
 
 		hatchBtn.gameObject.setInteractive({ useHandCursor: true }).once(Phaser.Input.Events.POINTER_DOWN, () => {
-			this.event.emit(this.evenNames.TAP_HATCH_BUTTON);
+			this.event.emit(this.evenNames.TAP_HATCH_BUTTON, Audios.sfx_click.key);
 			this._scene.tweens.add({
 				targets: hatchBtn.gameObject,
 				scale: hatchBtn.gameObject.scale * 0.96,
@@ -251,7 +252,7 @@ export class HatchSceneView {
 		const hatchBtnTween = this._scene.tweens.create({
 			onStart: () => {
 				hatchBtn.gameObject.setVisible(true);
-				this.event.emit(this.evenNames.CALL_POPUP_PANEL);
+				this.event.emit(this.evenNames.CALL_POPUP_PANEL, Audios.sfx_popup.key);
 			},
 			targets: hatchBtn.gameObject,
 			delay: 300,
@@ -270,7 +271,7 @@ export class HatchSceneView {
 		const tokoPointBtnTween = this._scene.tweens.create({
 			onStart: () => {
 				tokoPointBtn.gameObject.setVisible(true);
-				this.event.emit(this.evenNames.PLAY_SFX_BEEP);
+				this.event.emit(this.evenNames.PLAY_SFX_BEEP, Audios.sfx_beep.key);
 			},
 			targets: tokoPointBtn.gameObject,
 			delay: 600,

@@ -1,11 +1,12 @@
 import { AudioController } from "../../modules/audio/audio_controller";
-import { Audios } from "../../assetLibrary/assetAudio";
 import { GameplaySceneView } from "./gameplay_scene_view";
 import { SceneKeyInfo } from "../../const/gameInfo";
 import { ScreenUtility } from "../../helper/screenUtility";
 
 /**
  * @typedef {(lock: boolean) => void} OnLockInput
+ * @typedef {(audioKey: string) => void} OnTapPointButton
+ * @typedef {(audioKey: string) => void} OnFillProgressBar
  */
 
 export class GameplaySceneController extends Phaser.Scene {
@@ -28,11 +29,11 @@ export class GameplaySceneController extends Phaser.Scene {
 		this.onGotoHatch(() => {
 			this.scene.start(SceneKeyInfo.HATCH);
 		});
-		this.onTapPointButton(() => {
-			this.audioController.playSFX(Audios.sfx_zap.key, { volume: 1.25 });
+		this.onTapPointButton((audioKey) => {
+			this.audioController.playSFX(audioKey, { volume: 1.5 });
 		});
-		this.onFillProgressBar(() => {
-			this.audioController.playSFX(Audios.sfx_fill_up.key, { volume: 0.85 });
+		this.onFillProgressBar((audioKey) => {
+			this.audioController.playSFX(audioKey, { volume: 0.8 });
 		});
 		this.onLockInput((lock = true) => {
 			this.input.enabled = !lock;
@@ -57,14 +58,14 @@ export class GameplaySceneController extends Phaser.Scene {
 	}
 
 	/**
-	 * @param {Function} events
+	 * @param {OnTapPointButton} events
 	 */
 	onTapPointButton (events) {
 		this.view.event.once(this.view.evenNames.TAP_POINT_BUTTON, events)
 	}
 
 	/**
-	 * @param {Function} events
+	 * @param {OnFillProgressBar} events
 	 */
 	onFillProgressBar (events) {
 		this.view.event.on(this.view.evenNames.FILL_PROGRESS_BAR, events)
