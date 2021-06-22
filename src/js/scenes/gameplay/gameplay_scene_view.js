@@ -1,6 +1,6 @@
 import { Animations } from "../../assetLibrary/animations";
 import { Assets } from "../../assetLibrary/assetGameplay";
-import { _CONFIG as CONFIG } from "../../const/gameInfo";
+import { CONFIG } from "../../const/gameInfo";
 import { FontAsset } from "../../assetLibrary/assetFont";
 import { Image } from "../../modules/gameobjects/image";
 import { ScreenUtility } from "../../helper/screenUtility";
