@@ -1,5 +1,6 @@
 import { loadAssets, loadFonts } from "../../helper/loaderHelper";
 
+import { Audios as AudioAssets } from "../../assetLibrary/assetAudio";
 import { Assets as GameplayAssets } from "../../assetLibrary/assetGameplay";
 import { Assets as HatchAssets } from "../../assetLibrary/assetHatch";
 import { LoadingSceneView } from "./loading_scene_view";
@@ -51,6 +52,7 @@ export class LoadingSceneController extends Phaser.Scene {
 		this.load.once("complete", this.onCompleteLoad);
 
 		// LOAD ALL GAME FILE HERE!
+		loadAssets(this, AudioAssets);
 		loadAssets(this, GameplayAssets);
 		loadAssets(this, HatchAssets);
 

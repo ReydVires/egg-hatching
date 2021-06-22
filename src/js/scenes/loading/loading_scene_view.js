@@ -1,4 +1,4 @@
-import { _CONFIG as CONFIG } from "../../const/gameInfo";
+import { CONFIG } from "../../const/gameInfo";
 import { FontAsset } from "../../assetLibrary/assetFont";
 import { Text } from "../../modules/gameobjects/text";
 
