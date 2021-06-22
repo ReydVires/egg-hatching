@@ -30,8 +30,8 @@ export class LoadingSceneView {
 	 * @param {number} value
 	 */
 	updateLoading (value) {
-		CONFIG.ENABLE_LOG && console.log("Percent load::", value);
-		this._loadingText.gameObject.setText("LOADING\n" + Math.floor(value * 100).toString() + "%");
+		const content = "LOADING\n" + Math.floor(value * 100).toString() + "%";
+		this._loadingText.gameObject.setText(content);
 	}
 
 }
