@@ -54,4 +54,18 @@ export class TokoPointButtonView {
 		});
 	}
 
+	/**
+	 * @param {Function} [onComplete]
+	 */
+	hideButtonTween (onComplete) {
+		this._scene.tweens.add({
+			targets: this._tokoPointBtn.gameObject,
+			delay: 350,
+			scale: 0,
+			duration: 500,
+			ease: Phaser.Math.Easing.Back.In,
+			onComplete: () => onComplete(),
+		});
+	}
+
 }

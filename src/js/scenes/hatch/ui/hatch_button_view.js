@@ -71,8 +71,16 @@ export class HatchButtonView {
 				scale: this._hatchBtn.gameObject.scale * 0.96,
 				duration: 120,
 				yoyo: true,
-				onComplete: () => events()
-			})
+				onComplete: () => {
+					this._scene.tweens.add({
+						targets: this._hatchBtn.gameObject,
+						scale: 0,
+						duration: 500,
+						ease: Phaser.Math.Easing.Back.In,
+					});
+					events();
+				}
+			});
 		});
 	}
 

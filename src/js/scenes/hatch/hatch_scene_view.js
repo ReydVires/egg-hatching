@@ -73,7 +73,7 @@ export class HatchSceneView {
 		});
 
 		hatchBtn.onClick(() => {
-			this.event.emit(this.evenNames.GOTO_GAMEPLAY);
+			tokoPointBtn.hideButtonTween(() => this.event.emit(this.evenNames.GOTO_GAMEPLAY));
 		}, () => {
 			this.event.emit(this.evenNames.TAP_HATCH_BUTTON, Audios.sfx_click.key);
 		});
