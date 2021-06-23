@@ -17,3 +17,7 @@ Panen Telur - Assesment Project
 | `npm run dev` | Start your development server in port 8080 (if available), also notice that folder `src/assets` is served as public static folder |
 | `npm run build` | Build & bundle the project |
 | `npm run dist` | Run bundled project from `dist/` directory and open web server, not watching for changes |
+
+## Notes
+
+After calling `npm run build` command, files inside forlder `src/assets` should be copied manually, and move it into `dist/` directory. This will make `npm run dist` command run flawlessly.
