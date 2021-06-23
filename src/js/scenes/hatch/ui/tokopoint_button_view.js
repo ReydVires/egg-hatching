@@ -1,0 +1,57 @@
+import { Assets } from "../../../assetLibrary/assetHatch";
+import { Image } from "../../../modules/gameobjects/image";
+import { layerDepth } from "../info/layer_depth";
+
+export class TokoPointButtonView {
+
+	/** @private @type {Phaser.Scene} */
+	_scene;
+
+	/** @private @type {number} */
+	_baseRatio;
+	/** @private @type {Image} */
+	_tokoPointBtn;
+
+	/**
+	 * @param {Phaser.Scene} scene
+	 * @param {Phaser.Math.Vector2} initPosition
+	 * @param {number} ratio
+	 */
+	constructor (scene, initPosition, ratio) {
+		this._scene = scene;
+		this._baseRatio = ratio
+		this.create(initPosition, ratio);
+	}
+
+	/**
+	 * @private
+	 * @param {Phaser.Math.Vector2} initPosition
+	 * @param {number} ratio
+	 */
+	create (initPosition, ratio) {
+		this._tokoPointBtn = new Image(this._scene, initPosition.x, initPosition.y * 1.08, Assets.tokopoints_btn.key);
+		this._tokoPointBtn.transform.setToScaleDisplaySize(ratio);
+		this._tokoPointBtn.gameObject.setDepth(layerDepth.PANEL_POPUP).setVisible(false);
+	}
+
+	/**
+	 * @param {Function} [sfxEvent]
+	 */
+	scaleTween (sfxEvent) {
+		this._tokoPointBtn.gameObject.setScale(0);
+		this._scene.tweens.add({
+			onStart: () => {
+				(sfxEvent) && sfxEvent();
+				this._tokoPointBtn.gameObject.setVisible(true);
+			},
+			targets: this._tokoPointBtn.gameObject,
+			delay: 600,
+			duration: 500,
+			props: {
+				scale: { getStart: () => 0.1, getEnd: () => this._baseRatio }
+			},
+			ease: Phaser.Math.Easing.Back.Out,
+		});
+	}
+
+}

@@ -1,8 +1,14 @@
 import { AudioController } from "../../modules/audio/audio_controller";
-import { Audios } from "../../assetLibrary/assetAudio";
 import { HatchSceneView } from "./hatch_scene_view";
 import { SceneKeyInfo } from "../../const/gameInfo";
 import { ScreenUtility } from "../../helper/screenUtility";
+
+/**
+ * @typedef {(audioKey: string) => void} OnTapHatchButton
+ * @typedef {(audioKey: string) => void} OnCallPopupPanel
+ * @typedef {(audioKey: string) => void} OnShowItemCoint
+ * @typedef {(audioKey: string) => void} OnPlaySfxBeep
+ */
 
 export class HatchSceneController extends Phaser.Scene {
 
@@ -24,17 +30,17 @@ export class HatchSceneController extends Phaser.Scene {
 		this.onGoToGameplay(() => {
 			this.scene.start(SceneKeyInfo.GAMEPLAY);
 		});
-		this.onTapHatchButton(() => { // TODO: Passing audio assets name from view (?)
-			this.audioController.playSFX(Audios.sfx_click.key, { volume: 1.15 });
+		this.onTapHatchButton((audioKey) => {
+			this.audioController.playSFX(audioKey, { volume: 1.15 });
 		});
-		this.onCallPopupPanel(() => {
-			this.audioController.playSFX(Audios.sfx_popup.key);
+		this.onCallPopupPanel((audioKey) => {
+			this.audioController.playSFX(audioKey);
 		});
-		this.onShowItemCoint(() => {
-			this.audioController.playSFX(Audios.sfx_achievement.key);
+		this.onShowItemCoint((audioKey) => {
+			this.audioController.playSFX(audioKey);
 		});
-		this.onPlaySfxBeep(() => {
-			this.audioController.playSFX(Audios.sfx_beep.key);
+		this.onPlaySfxBeep((audioKey) => {
+			this.audioController.playSFX(audioKey);
 		});
 	}
 
@@ -56,28 +62,28 @@ export class HatchSceneController extends Phaser.Scene {
 	}
 
 	/**
-	 * @param {Function} events
+	 * @param {OnPlaySfxBeep} events
 	 */
 	onPlaySfxBeep (events) {
 		this.view.event.on(this.view.evenNames.PLAY_SFX_BEEP, events);
 	}
 
 	/**
-	 * @param {Function} events
+	 * @param {OnTapHatchButton} events
 	 */
 	onTapHatchButton (events) {
 		this.view.event.on(this.view.evenNames.TAP_HATCH_BUTTON, events);
 	}
 
 	/**
-	 * @param {Function} events
+	 * @param {OnCallPopupPanel} events
 	 */
 	onCallPopupPanel (events) {
 		this.view.event.on(this.view.evenNames.CALL_POPUP_PANEL, events);
 	}
 
 	/**
-	 * @param {Function} events
+	 * @param {OnShowItemCoint} events
 	 */
 	onShowItemCoint (events) {
 		this.view.event.on(this.view.evenNames.SHOW_ITEM_COIN, events);
