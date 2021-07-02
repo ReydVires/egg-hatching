@@ -1,5 +1,6 @@
 import "./css/index.css";
 
+import { BootSceneController } from "./js/scenes/boot/boot_scene_controller";
 import { CONFIG } from "./js/const/gameInfo";
 import { GameplaySceneController } from "./js/scenes/gameplay/gameplay_scene_controller";
 import { HatchSceneController } from "./js/scenes/hatch/hatch_scene_controller";
@@ -59,6 +60,7 @@ const gameConfig = {
 	},
 	seed: [((+new Date()).toString(16) + (Math.random() * 100000000 | 0).toString(16))],
 	scene: [
+		BootSceneController,
 		LoadingSceneController,
 		GameplaySceneController,
 		HatchSceneController,

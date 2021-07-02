@@ -30,13 +30,8 @@ export class LoadingSceneController extends Phaser.Scene {
 		this.load.once("complete", this.onCompleteLoadBoot);
 
 		// LOAD LOADING ASSETS HERE!
-		Promise.all([
-			loadFonts(fontList()),
-		])
-		.then(() => {
-			this.load.start(); // Execute: onCompleteLoadBoot
-		})
-		.catch((error) => Error(`${SceneKeyInfo.LOADING}::\n` + error));
+
+		this.load.start(); // Execute: onCompleteLoadBoot
 	}
 
 	onCompleteLoadBoot () {
