@@ -23,8 +23,6 @@ export class HatchSceneController extends Phaser.Scene {
 
 	init () {
 		this.view = new HatchSceneView(this);
-		ScreenUtility.getInstance().init(this);
-		AudioController.getInstance().init(this);
 		this.audioController = AudioController.getInstance();
 
 		this.onGoToGameplay(() => {

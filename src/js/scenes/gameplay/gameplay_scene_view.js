@@ -39,18 +39,18 @@ export class GameplaySceneView {
 	create () {
 		const { height: screenHeight } = this._screenUtil;
 
-		const backgroundView = new BackgroundView(this._scene, this._screenUtil);
-		const charView = new CharView(this._scene, this._screenUtil, backgroundView.baseRatio);
-		const overlayUIView = new OverlayFlashUIView(this._scene, this._screenUtil);
-		const hudView = new HUDUIView(this._scene, this._screenUtil);
-		const playBtnView = new PlayButtonUIView(this._scene, this._screenUtil, backgroundView.baseRatio);
-		const electricityEffectView = new ElectricityView(this._scene, playBtnView.getDisplayPositionFromCoordinate(0.7, 0), backgroundView.hatchNestRatio);
+		const backgroundView = new BackgroundView(this._scene);
+		const charView = new CharView(this._scene, backgroundView.baseRatio);
+		const overlayUIView = new OverlayFlashUIView(this._scene);
+		const hudUIView = new HUDUIView(this._scene);
+		const playBtnUIView = new PlayButtonUIView(this._scene, backgroundView.baseRatio);
+		const electricityEffectView = new ElectricityView(this._scene, playBtnUIView.getDisplayPositionFromCoordinate(0.7, 0), backgroundView.hatchNestRatio);
 
 		charView.onAnimExcitedComplete(() => {
 			overlayUIView.showFlashlight(() => this.event.emit(this.evenNames.GOTO_HATCH));
 		});
 
-		playBtnView.onClick(() => {
+		playBtnUIView.onClick(() => {
 			this.event.emit(this.evenNames.TAP_POINT_BUTTON, Audios.sfx_zap.key);
 			this.event.emit(this.evenNames.LOCK_INPUT);
 			electricityEffectView.playAnim();
@@ -58,7 +58,7 @@ export class GameplaySceneView {
 
 		electricityEffectView.onAnimElectricityComplete(() => {
 			this.event.emit(this.evenNames.FILL_PROGRESS_BAR, Audios.sfx_fill_up.key);
-			hudView.fillProgressBar(() => {
+			hudUIView.fillProgressBar(() => {
 				charView.playAnimExcited();
 			});
 		});

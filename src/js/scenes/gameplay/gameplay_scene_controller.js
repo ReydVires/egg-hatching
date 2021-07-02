@@ -1,7 +1,6 @@
 import { AudioController } from "../../modules/audio/audio_controller";
 import { GameplaySceneView } from "./gameplay_scene_view";
 import { SceneKeyInfo } from "../../const/gameInfo";
-import { ScreenUtility } from "../../helper/screenUtility";
 
 /**
  * @typedef {(lock: boolean) => void} OnLockInput
@@ -22,8 +21,6 @@ export class GameplaySceneController extends Phaser.Scene {
 
 	init () {
 		this.view = new GameplaySceneView(this);
-		ScreenUtility.getInstance().init(this);
-		AudioController.getInstance().init(this);
 		this.audioController = AudioController.getInstance();
 
 		this.onGotoHatch(() => {
