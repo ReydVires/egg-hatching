@@ -1,9 +1,9 @@
 import { Assets } from "../../../assetLibrary/assetHatch";
 import { FontAsset } from "../../../assetLibrary/assetFont";
 import { Image } from "../../../modules/gameobjects/image";
+import { LayerDepth } from "../../../const/layerDepth";
 import { ScreenUtility } from "../../../helper/screenUtility";
 import { Text } from "../../../modules/gameobjects/text";
-import { layerDepth } from "../info/layer_depth";
 
 export class DialogUIView {
 
@@ -19,12 +19,11 @@ export class DialogUIView {
 
 	/**
 	 * @param {Phaser.Scene} scene
-	 * @param {ScreenUtility} screenUtil
 	 * @param {number} ratio
 	 */
-	constructor (scene, screenUtil, ratio) {
+	constructor (scene, ratio) {
 		this._scene = scene
-		this._screenUtil = screenUtil
+		this._screenUtil = ScreenUtility.getInstance();
 		this.create(ratio);
 	}
 
@@ -49,7 +48,7 @@ export class DialogUIView {
 		this._dialogContainer = this._scene.add.container(centerX, centerY * 0.5, [
 			dialogFrame.gameObject,
 			dialogLabel.gameObject
-		]).setDepth(layerDepth.DIALOG);
+		]).setDepth(LayerDepth.hatch.DIALOG);
 
 		const prevPosYDialog = this._dialogContainer.y;
 		this._floatDialogTween = this._scene.tweens.create({
@@ -63,7 +62,8 @@ export class DialogUIView {
 		});
 	}
 
-	alphaTween () {
+	playTween () {
+		this._floatDialogTween.play();
 		this._scene.tweens.add({
 			targets: this._dialogContainer,
 			delay: 1800,
@@ -73,10 +73,6 @@ export class DialogUIView {
 			},
 			ease: Phaser.Math.Easing.Linear,
 		});
-	}
-
-	floatTween () {
-		this._floatDialogTween.play();
 	}
 
 }

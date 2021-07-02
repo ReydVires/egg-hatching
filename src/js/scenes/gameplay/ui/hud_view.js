@@ -16,11 +16,10 @@ export class HUDUIView {
 
 	/**
 	 * @param {Phaser.Scene} scene
-	 * @param {ScreenUtility} screenUtil
 	 */
-	constructor (scene, screenUtil) {
+	constructor (scene) {
 		this._scene = scene;
-		this._screenUtil = screenUtil;
+		this._screenUtil = ScreenUtility.getInstance();
 		this.create();
 	}
 

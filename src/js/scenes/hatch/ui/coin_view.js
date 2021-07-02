@@ -1,9 +1,9 @@
 import { Assets } from "../../../assetLibrary/assetHatch";
 import { Image } from "../../../modules/gameobjects/image";
+import { LayerDepth } from "../../../const/layerDepth";
 import { ScreenUtility } from "../../../helper/screenUtility";
-import { layerDepth } from "../info/layer_depth";
 
-export class CoinView {
+export class CoinUIView {
 
 	/** @private @type {Phaser.Scene} */
 	_scene;
@@ -17,13 +17,12 @@ export class CoinView {
 
 	/**
 	 * @param {Phaser.Scene} scene
-	 * @param {ScreenUtility} screenUtil
 	 * @param {Phaser.Math.Vector2} initPosition
 	 * @param {number} ratio
 	 */
-	constructor (scene, screenUtil, initPosition, ratio) {
+	constructor (scene, initPosition, ratio) {
 		this._scene = scene;
-		this._screenUtil = screenUtil;
+		this._screenUtil = ScreenUtility.getInstance();
 		this._baseRatio = ratio;
 		this.create(initPosition, ratio);
 	}
@@ -34,10 +33,8 @@ export class CoinView {
 	 * @param {number} ratio
 	 */
 	create (initPosition, ratio) {
-		// const coinPosition = eggHatch.getDisplayPositionFromCoordinate(0.5, 0.5);
 		this._coin = new Image(this._scene, initPosition.x, initPosition.y, Assets.price.key);
 		this._coin.gameObject.setAlpha(0).setVisible(false);
-		// const showScaleCoin = eggHatch.baseRatio * 0.5;
 		this._coin.transform.setToScaleDisplaySize(ratio * 0.5);
 	}
 
@@ -51,14 +48,13 @@ export class CoinView {
 			onStart: () => {
 				(sfxEvent) && sfxEvent();
 				this._coin.gameObject.setVisible(true);
-				// this.event.emit(this.evenNames.SHOW_ITEM_COIN, Audios.sfx_achievement.key);
 			},
 			targets: this._coin.gameObject,
 			props: {
 				alpha: { getStart: () => 0.3, getEnd: () => 1 },
 			},
 			duration: 100,
-			onComplete: () => this._coin.gameObject.setDepth(layerDepth.COIN)
+			onComplete: () => this._coin.gameObject.setDepth(LayerDepth.hatch.COIN)
 		});
 		this._scene.tweens.add({
 			targets: this._coin.gameObject,
@@ -68,9 +64,6 @@ export class CoinView {
 			onComplete: () => {
 				(onComplete) && onComplete();
 			}
-			// onComplete: () => popupPanel.showTween(() => {
-			// 	this.event.emit(this.evenNames.CALL_BUTTONS);
-			// })
 		});
 		this._scene.tweens.add({
 			targets: this._coin.gameObject,
@@ -80,8 +73,13 @@ export class CoinView {
 					getEnd: () => (this._baseRatio * 1.1)
 				}
 			},
-			duration: 1200,
-			ease: Phaser.Math.Easing.Back.Out,
+			duration: 1000,
+			ease: (/** @type {number} */x) => {
+				const c1 = 5; // Overshoot
+				const c3 = c1 + 1;
+
+				return 1 + c3 * ((x - 1) ** 3) + c1 * ((x - 1) ** 2);
+			}
 		});
 	}
 

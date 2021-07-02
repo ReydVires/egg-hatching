@@ -1,7 +1,7 @@
 import { Assets } from "../../../assetLibrary/assetHatch";
 import { Image } from "../../../modules/gameobjects/image";
+import { LayerDepth } from "../../../const/layerDepth";
 import { ScreenUtility } from "../../../helper/screenUtility";
-import { layerDepth } from "../info/layer_depth";
 
 export class HatchButtonView {
 
@@ -17,12 +17,11 @@ export class HatchButtonView {
 
 	/**
 	 * @param {Phaser.Scene} scene
-	 * @param {ScreenUtility} screenUtil
 	 * @param {number} ratio
 	 */
-	constructor (scene, screenUtil, ratio) {
+	constructor (scene, ratio) {
 		this._scene = scene;
-		this._screenUtil = screenUtil;
+		this._screenUtil = ScreenUtility.getInstance();
 		this.create(ratio);
 	}
 
@@ -34,7 +33,7 @@ export class HatchButtonView {
 		const { centerX, centerY } = this._screenUtil;
 		this._hatchBtn = new Image(this._scene, centerX, centerY * 1.55, Assets.hatch_btn.key);
 		this._hatchBtn.transform.setToScaleDisplaySize(ratio);
-		this._hatchBtn.gameObject.setDepth(layerDepth.BUTTON).setVisible(false);
+		this._hatchBtn.gameObject.setDepth(LayerDepth.hatch.BUTTON).setVisible(false);
 
 		this._hatchBtnTween = this._scene.tweens.create({
 			onStart: () => {

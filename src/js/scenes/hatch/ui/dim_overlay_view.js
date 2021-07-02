@@ -1,7 +1,7 @@
+import { LayerDepth } from "../../../const/layerDepth";
 import { ScreenUtility } from "../../../helper/screenUtility";
-import { layerDepth } from "../info/layer_depth";
 
-export class DimOverlayView {
+export class DimOverlayUIView {
 
 	/** @private @type {Phaser.Scene} */
 	_scene;
@@ -13,11 +13,10 @@ export class DimOverlayView {
 
 	/**
 	 * @param {Phaser.Scene} scene
-	 * @param {ScreenUtility} screenUtil
 	 */
-	constructor (scene, screenUtil) {
+	constructor (scene) {
 		this._scene = scene;
-		this._screenUtil = screenUtil;
+		this._screenUtil = ScreenUtility.getInstance();
 		this.create();
 	}
 
@@ -27,7 +26,7 @@ export class DimOverlayView {
 	create () {
 		const { centerX, centerY, width: screenWidth, height: screenHeight } = this._screenUtil;
 		this._dimOverlay = this._scene.add.rectangle(centerX, centerY, screenWidth, screenHeight, 0x636e72, 1);
-		this._dimOverlay.setAlpha(0).setVisible(false).setDepth(layerDepth.OVERLAY_DIM);
+		this._dimOverlay.setAlpha(0).setVisible(false).setDepth(LayerDepth.hatch.OVERLAY_DIM);
 	}
 
 	alphaTween () {

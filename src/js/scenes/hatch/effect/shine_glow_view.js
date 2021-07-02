@@ -14,13 +14,12 @@ export class ShineGlowView {
 
 	/**
 	 * @param {Phaser.Scene} scene
-	 * @param {ScreenUtility} screenUtil
 	 * @param {Phaser.Math.Vector2} initPosition
 	 * @param {number} ratio
 	 */
-	constructor (scene, screenUtil, initPosition, ratio) {
+	constructor (scene, initPosition, ratio) {
 		this._scene = scene;
-		this._screenUtil = screenUtil;
+		this._screenUtil = ScreenUtility.getInstance();
 		this.create(initPosition, ratio);
 	}
 

@@ -1,7 +1,7 @@
 import { Assets } from "../../../assetLibrary/assetGameplay";
 import { Image } from "../../../modules/gameobjects/image";
+import { LayerDepth } from "../../../const/layerDepth";
 import { ScreenUtility } from "../../../helper/screenUtility";
-import { layerDepth } from "../info/layer_depth";
 
 export class BackgroundView {
 
@@ -16,11 +16,10 @@ export class BackgroundView {
 
 	/**
 	 * @param {Phaser.Scene} scene
-	 * @param {ScreenUtility} screenUtil
 	 */
-	constructor (scene, screenUtil) {
+	constructor (scene) {
 		this._scene = scene;
-		this._screenUtil = screenUtil;
+		this._screenUtil = ScreenUtility.getInstance();
 		this.create();
 	}
 
@@ -64,11 +63,11 @@ export class BackgroundView {
 
 		const leafLeft = new Image(this._scene, 0, screenHeight, Assets.leaf.key);
 		leafLeft.transform.setToScaleDisplaySize(this._baseRatio * 1.25);
-		leafLeft.gameObject.setOrigin(0, 1).setDepth(layerDepth.LEAF);
+		leafLeft.gameObject.setOrigin(0, 1).setDepth(LayerDepth.gameplay.LEAF);
 
 		const leafRight = new Image(this._scene, screenWidth, screenHeight, Assets.leaf.key);
 		leafRight.transform.setToScaleDisplaySize(this._baseRatio * 1.25);
-		leafRight.gameObject.setOrigin(1, 1).setFlipX(true).setDepth(layerDepth.LEAF);
+		leafRight.gameObject.setOrigin(1, 1).setFlipX(true).setDepth(LayerDepth.gameplay.LEAF);
 	}
 
 }

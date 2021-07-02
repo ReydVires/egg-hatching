@@ -1,9 +1,9 @@
 import { Assets } from "../../../assetLibrary/assetHatch";
 import { FontAsset } from "../../../assetLibrary/assetFont";
 import { Image } from "../../../modules/gameobjects/image";
+import { LayerDepth } from "../../../const/layerDepth";
 import { ScreenUtility } from "../../../helper/screenUtility";
 import { Text } from "../../../modules/gameobjects/text";
-import { layerDepth } from "../info/layer_depth";
 
 export class PopupPanelView {
 
@@ -19,12 +19,11 @@ export class PopupPanelView {
 
 	/**
 	 * @param {Phaser.Scene} scene
-	 * @param {ScreenUtility} screenUtil
 	 * @param {number} ratio
 	 */
-	constructor (scene, screenUtil, ratio) {
+	constructor (scene, ratio) {
 		this._scene = scene;
-		this._screenUtil = screenUtil
+		this._screenUtil = ScreenUtility.getInstance();
 		this.create(ratio);
 	}
 
@@ -63,7 +62,7 @@ export class PopupPanelView {
 			this._popupPanel.gameObject,
 			popupLabel.gameObject,
 			description.gameObject,
-		]).setDepth(layerDepth.PANEL_POPUP).setScale(0).setVisible(false);
+		]).setDepth(LayerDepth.hatch.PANEL_POPUP).setScale(0).setVisible(false);
 	}
 
 	/**

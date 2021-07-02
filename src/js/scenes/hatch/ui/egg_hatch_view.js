@@ -1,8 +1,8 @@
 import { Animations } from "../../../assetLibrary/animations";
 import { Assets } from "../../../assetLibrary/assetHatch";
+import { LayerDepth } from "../../../const/layerDepth";
 import { Sprite } from "../../../modules/gameobjects/sprite";
 import { addAnimation } from "../../../helper/animationHelper";
-import { layerDepth } from "../info/layer_depth";
 
 export class EggHatchView {
 
@@ -36,7 +36,7 @@ export class EggHatchView {
 	create (initPosition, ratio) {
 		this._eggHatch = new Sprite(this._scene, initPosition.x, initPosition.y, Assets.egg_crack.key, 0);
 		this._eggHatch.transform.setToScaleDisplaySize(ratio * 0.325);
-		this._eggHatch.gameObject.setOrigin(0.5, 1).setDepth(layerDepth.EGG);
+		this._eggHatch.gameObject.setOrigin(0.5, 1).setDepth(LayerDepth.hatch.EGG);
 
 		this._baseRatio = this._eggHatch.transform.displayToOriginalHeightRatio;
 

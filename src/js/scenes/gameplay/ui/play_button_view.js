@@ -1,9 +1,9 @@
 import { Assets } from "../../../assetLibrary/assetGameplay";
 import { FontAsset } from "../../../assetLibrary/assetFont";
 import { Image } from "../../../modules/gameobjects/image";
+import { LayerDepth } from "../../../const/layerDepth";
 import { ScreenUtility } from "../../../helper/screenUtility";
 import { Text } from "../../../modules/gameobjects/text";
-import { layerDepth } from "../info/layer_depth";
 
 export class PlayButtonUIView {
 
@@ -11,9 +11,6 @@ export class PlayButtonUIView {
 	_scene;
 	/** @private @type {ScreenUtility} */
 	_screenUtil;
-
-	/** @private @type {number} */
-	_baseRatio;
 
 	/** @private @type {Image} */
 	_playBtn;
@@ -28,25 +25,24 @@ export class PlayButtonUIView {
 
 	/**
 	 * @param {Phaser.Scene} scene
-	 * @param {ScreenUtility} screenUtil
-	 * @param {number} baseRatio
+	 * @param {number} ratio
 	 */
-	constructor (scene, screenUtil, baseRatio) {
+	constructor (scene, ratio) {
 		this._scene = scene;
-		this._screenUtil = screenUtil;
-		this._baseRatio = baseRatio
-		this.create();
+		this._screenUtil = ScreenUtility.getInstance();
+		this.create(ratio);
 	}
 
 	/**
 	 * @private
+	 * @param {number} ratio
 	 */
-	create () {
+	create (ratio) {
 		const { centerX, height: screenHeight } = this._screenUtil;
 		const payPoint = 100;
 		this._playBtn = new Image(this._scene, centerX, screenHeight * 0.9, Assets.btn.key);
-		this._playBtn.transform.setToScaleDisplaySize(this._baseRatio * 0.5);
-		this._playBtn.gameObject.setDepth(layerDepth.UI_BUTTON);
+		this._playBtn.transform.setToScaleDisplaySize(ratio * 0.5);
+		this._playBtn.gameObject.setDepth(LayerDepth.gameplay.BUTTON);
 
 		const playBtnLabelPosition = this._playBtn.transform.getDisplayPositionFromCoordinate(0.5, 0.5);
 		const playBtnLabel = new Text(this._scene, playBtnLabelPosition.x, playBtnLabelPosition.y, String(payPoint), {
@@ -55,7 +51,7 @@ export class PlayButtonUIView {
 			fontStyle: "bold",
 			fontSize: `${72 * this._playBtn.transform.displayToOriginalHeightRatio}px`,
 		});
-		playBtnLabel.gameObject.setOrigin(0.5).setDepth(layerDepth.UI_BUTTON);
+		playBtnLabel.gameObject.setOrigin(0.5).setDepth(LayerDepth.gameplay.BUTTON);
 
 		const playBtnOriginScale = this._playBtn.gameObject.scale;
 		this._playBtnTween = this._scene.tweens.create({
@@ -74,7 +70,7 @@ export class PlayButtonUIView {
 		this._playBtnTween.play();
 
 		const targetToEffect = this._playBtn.gameObject;
-		this._glowDimGrapics = this._scene.add.graphics().setDepth(layerDepth.UI_BUTTON);
+		this._glowDimGrapics = this._scene.add.graphics().setDepth(LayerDepth.gameplay.BUTTON);
 		this._glowDimGrapics.clear();
 		this._glowDimGrapics.fillStyle(0xfafafa, 1);
 		this._glowDimGrapics.fillRoundedRect(
@@ -82,7 +78,7 @@ export class PlayButtonUIView {
 			targetToEffect.y - (targetToEffect.displayHeight / 2),
 			targetToEffect.displayWidth,
 			targetToEffect.displayHeight,
-			30 * this._baseRatio
+			30 * ratio
 		);
 
 		this._idleGlowDimTween = this._scene.tweens.create({

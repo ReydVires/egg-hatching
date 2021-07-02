@@ -1,6 +1,6 @@
 import { Assets } from "../../../assetLibrary/assetHatch";
 import { Image } from "../../../modules/gameobjects/image";
-import { layerDepth } from "../info/layer_depth";
+import { LayerDepth } from "../../../const/layerDepth";
 
 export class TokoPointButtonView {
 
@@ -31,7 +31,15 @@ export class TokoPointButtonView {
 	create (initPosition, ratio) {
 		this._tokoPointBtn = new Image(this._scene, initPosition.x, initPosition.y * 1.08, Assets.tokopoints_btn.key);
 		this._tokoPointBtn.transform.setToScaleDisplaySize(ratio);
-		this._tokoPointBtn.gameObject.setDepth(layerDepth.PANEL_POPUP).setVisible(false);
+		this._tokoPointBtn.gameObject.setDepth(LayerDepth.hatch.PANEL_POPUP).setVisible(false);
+	}
+
+	/**
+	 * @param {Function} event
+	 */
+	onClick (event) {
+		this._tokoPointBtn.gameObject.setInteractive({useHandCursor: true})
+			.on(Phaser.Input.Events.POINTER_DOWN, event);
 	}
 
 	/**
