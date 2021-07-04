@@ -24,27 +24,53 @@ export class AudioController {
 	init (scene) {
 		return new Promise((resolve) => {
 			this._scene = scene;
-			(this._sfxCache) && this.clearSFXCache();
 			this._sfxCache = new Map();
 			resolve();
 		});
 	}
 
 	/**
+	 * @private
+	 * @param {string} key
+	 */
+	getSFXCache (key) {
+		if (this._sfxCache.has(key)) {
+			return this._sfxCache.get(key);
+		}
+		const sfx = this._scene.sound.add(key);
+		this._sfxCache.set(key, sfx);
+		return sfx;
+	}
+
+	/**
 	 * @param {string} key
 	 * @param {Phaser.Types.Sound.SoundConfig} [config]
-	 * @param {boolean} [force]
 	 */
-	playSFX (key, config, force = true) {
-		if (!this._sfxCache.has(key)) {
-			const sfx = this._scene.sound.add(key, config);
-			sfx.play();
-			this._sfxCache.set(key, sfx);
+	playSFX (key, config) {
+		const sfxCache = this.getSFXCache(key);
+		sfxCache.play(config);
+	}
+
+	/**
+	 * @param {string} key
+	 * @param {Phaser.Types.Sound.SoundConfig} [config]
+	 */
+	playSFXAfterFinish (key, config) {
+		const sfxCache = this.getSFXCache(key);
+		(!sfxCache.isPlaying) && sfxCache.play(config);
+	}
+
+	/**
+	 * @param {string} key
+	 * @param {Phaser.Types.Sound.SoundConfig} [config]
+	 */
+	playSFXRepeatedly (key, config) {
+		const sfxCache = this.getSFXCache(key);
+		if (sfxCache.isPlaying) {
+			(this._scene.sound.add(key, config)).play();
+			return;
 		}
-		else {
-			if (!force && this._sfxCache.get(key)?.isPlaying) return;
-			this._sfxCache.get(key)?.play(config);
-		}
+		sfxCache.play(config);
 	}
 
 	clearSFXCache () {
