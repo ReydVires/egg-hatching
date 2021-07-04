@@ -21,10 +21,9 @@ export class GameplaySceneView {
 	event;
 	/** @readonly */
 	evenNames = {
-		FILL_PROGRESS_BAR: "FILL_PROGRESS_BAR",
 		GOTO_HATCH: "GOTO_HATCH",
 		LOCK_INPUT: "LOCK_INPUT",
-		TAP_POINT_BUTTON: "TAP_POINT_BUTTON",
+		PLAY_SFX: "PLAY_SFX",
 	};
 
 	/**
@@ -51,13 +50,13 @@ export class GameplaySceneView {
 		});
 
 		playBtnUIView.onClick(() => {
-			this.event.emit(this.evenNames.TAP_POINT_BUTTON, Audios.sfx_zap.key);
+			this.event.emit(this.evenNames.PLAY_SFX, Audios.sfx_zap.key, { volume: 1.5 });
 			this.event.emit(this.evenNames.LOCK_INPUT);
 			electricityEffectView.playAnim();
 		});
 
 		electricityEffectView.onAnimElectricityComplete(() => {
-			this.event.emit(this.evenNames.FILL_PROGRESS_BAR, Audios.sfx_fill_up.key);
+			this.event.emit(this.evenNames.PLAY_SFX, Audios.sfx_fill_up.key, { volume: 0.8 });
 			hudUIView.fillProgressBar(() => {
 				charView.playAnimExcited();
 			});

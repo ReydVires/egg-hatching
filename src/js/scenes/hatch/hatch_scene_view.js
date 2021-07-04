@@ -20,10 +20,7 @@ export class HatchSceneView {
 	/** @readonly */
 	evenNames = {
 		GOTO_GAMEPLAY: "GOTO_GAMEPLAY",
-		TAP_HATCH_BUTTON: "TAP_HATCH_BUTTON",
-		CALL_POPUP_PANEL: "CALL_POPUP_PANEL",
-		SHOW_ITEM_COIN: "SHOW_ITEM_COIN",
-		PLAY_SFX_BEEP: "PLAY_SFX_BEEP",
+		PLAY_SFX: "PLAY_SFX",
 	};
 
 	/**
@@ -55,19 +52,19 @@ export class HatchSceneView {
 			dimOverlayUIView.alphaTween();
 			coinUIView.playTweens(() => {
 				const onCompletePopupTween = () => {
-					hatchBtn.showButtonTween(() => this.event.emit(this.evenNames.CALL_POPUP_PANEL, Audios.sfx_popup.key));
-					tokoPointBtn.scaleTween(() => this.event.emit(this.evenNames.PLAY_SFX_BEEP, Audios.sfx_beep.key));
+					hatchBtn.showButtonTween(() => this.event.emit(this.evenNames.PLAY_SFX, Audios.sfx_popup.key));
+					tokoPointBtn.scaleTween(() => this.event.emit(this.evenNames.PLAY_SFX, Audios.sfx_beep.key));
 				};
 				popupPanelView.showTween(onCompletePopupTween)
 			}, () => {
-				this.event.emit(this.evenNames.SHOW_ITEM_COIN, Audios.sfx_achievement.key);
+				this.event.emit(this.evenNames.PLAY_SFX, Audios.sfx_achievement.key);
 			});
 		});
 
 		hatchBtn.onClick(() => {
 			tokoPointBtn.hideButtonTween(() => this.event.emit(this.evenNames.GOTO_GAMEPLAY));
 		}, () => {
-			this.event.emit(this.evenNames.TAP_HATCH_BUTTON, Audios.sfx_click.key);
+			this.event.emit(this.evenNames.PLAY_SFX, Audios.sfx_click.key, { volume: 1.15 });
 		});
 	}
 

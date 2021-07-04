@@ -8,6 +8,7 @@ import { ScreenUtility } from "../../helper/screenUtility";
  * @typedef {(audioKey: string) => void} OnCallPopupPanel
  * @typedef {(audioKey: string) => void} OnShowItemCoint
  * @typedef {(audioKey: string) => void} OnPlaySfxBeep
+ * @typedef {(audioKey: string, config?: Phaser.Types.Sound.SoundConfig) => void} OnPlaySFX
  */
 
 export class HatchSceneController extends Phaser.Scene {
@@ -28,17 +29,9 @@ export class HatchSceneController extends Phaser.Scene {
 		this.onGoToGameplay(() => {
 			this.scene.start(SceneKeyInfo.GAMEPLAY);
 		});
-		this.onTapHatchButton((audioKey) => {
-			this.audioController.playSFX(audioKey, { volume: 1.15 });
-		});
-		this.onCallPopupPanel((audioKey) => {
-			this.audioController.playSFX(audioKey);
-		});
-		this.onShowItemCoint((audioKey) => {
-			this.audioController.playSFX(audioKey);
-		});
-		this.onPlaySfxBeep((audioKey) => {
-			this.audioController.playSFX(audioKey);
+
+		this.onPlaySFX((audioKey, config) => {
+			this.audioController.playSFX(audioKey, config);
 		});
 	}
 
@@ -60,31 +53,10 @@ export class HatchSceneController extends Phaser.Scene {
 	}
 
 	/**
-	 * @param {OnPlaySfxBeep} events
+	 * @param {OnPlaySFX} events
 	 */
-	onPlaySfxBeep (events) {
-		this.view.event.on(this.view.evenNames.PLAY_SFX_BEEP, events);
-	}
-
-	/**
-	 * @param {OnTapHatchButton} events
-	 */
-	onTapHatchButton (events) {
-		this.view.event.on(this.view.evenNames.TAP_HATCH_BUTTON, events);
-	}
-
-	/**
-	 * @param {OnCallPopupPanel} events
-	 */
-	onCallPopupPanel (events) {
-		this.view.event.on(this.view.evenNames.CALL_POPUP_PANEL, events);
-	}
-
-	/**
-	 * @param {OnShowItemCoint} events
-	 */
-	onShowItemCoint (events) {
-		this.view.event.on(this.view.evenNames.SHOW_ITEM_COIN, events);
+	onPlaySFX (events) {
+		this.view.event.on(this.view.evenNames.PLAY_SFX, events);
 	}
 
 }
