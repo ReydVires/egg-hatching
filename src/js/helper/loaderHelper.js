@@ -25,6 +25,9 @@ export function loadAssets (scene, assets) {
 				frameHeight: assetInfo.height
 			});
 		}
+		else if (assetInfo.type === AssetType.SVG) {
+			scene.load.svg(assetInfo.key, CONFIG.BASE_ASSET_URL + assetInfo.url);
+		}
 		else if (assetInfo.type === AssetType.AUDIO) {
 			if (Array.isArray(assetInfo.url)) {
 				const audioPath = assetInfo.url.map((/** @type {string} */ path) => CONFIG.BASE_ASSET_URL + path);

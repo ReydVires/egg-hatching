@@ -47,11 +47,11 @@ export class BackgroundView {
 		const windowOnWall = new Image(this._scene, centerX * 1.5, centerY * 0.7, Assets.window.key);
 		windowOnWall.transform.setToScaleDisplaySize(this._baseRatio * 0.8);
 
-		const lamp = new Image(this._scene, centerX * 1.5, centerY * 1.05, Assets.lamp.key);
+		const lamp = new Image(this._scene, centerX * 1.5, centerY * 1.05, Assets.lamp_svg.key);
 		lamp.transform.setToScaleDisplaySize(this._baseRatio * 1.4);
 
 		const nestPosition = lamp.transform.getDisplayPositionFromCoordinate(0.5, 1.15);
-		const hatchNest = new Image(this._scene, nestPosition.x, nestPosition.y, Assets.nest.key);
+		const hatchNest = new Image(this._scene, nestPosition.x, nestPosition.y, Assets.nest_svg.key);
 		hatchNest.transform.setToScaleDisplaySize(this._baseRatio * 1.35);
 
 		this._hatchNestRatio = hatchNest.transform.displayToOriginalHeightRatio;

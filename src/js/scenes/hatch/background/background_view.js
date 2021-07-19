@@ -42,7 +42,7 @@ export class BackgroundView {
 
 		this._baseRatio = background.transform.displayToOriginalHeightRatio;
 
-		this._hatchNest = new Image(this._scene, centerX, screenHeight * 0.9, AssetGameplay.nest.key);
+		this._hatchNest = new Image(this._scene, centerX, screenHeight * 0.9, AssetGameplay.nest_svg.key);
 		this._hatchNest.transform.setToScaleDisplaySize(background.transform.displayToOriginalHeightRatio * 6);
 	}
 
