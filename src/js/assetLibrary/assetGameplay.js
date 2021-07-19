@@ -17,11 +17,6 @@ export const Assets = {
 		url: "/img/img_window.png",
 		type: AssetType.STATIC
 	},
-	nest: {
-		key: "nest",
-		url: "/img/img_nest.png",
-		type: AssetType.STATIC
-	},
 	blue_egg: {
 		key: "blue_egg",
 		url: "/img/img_blue_egg.png",
@@ -30,11 +25,6 @@ export const Assets = {
 	leaf: {
 		key: "leaf_left",
 		url: "/img/img_leaf_left.png",
-		type: AssetType.STATIC
-	},
-	lamp: {
-		key: "lamp",
-		url: "/img/img_lamp.png",
 		type: AssetType.STATIC
 	},
 	hud: {
@@ -56,6 +46,16 @@ export const Assets = {
 		key: "ui_btn_gray",
 		url: "/img/ui/img_ui_btn_gray.png",
 		type: AssetType.STATIC
+	},
+	nest_svg: {
+		key: "nest_svg",
+		url: "/svg/nest.svg",
+		type: AssetType.SVG
+	},
+	lamp_svg: {
+		key: "lamp_svg",
+		url: "/svg/lamp.svg",
+		type: AssetType.SVG
 	},
 	// SPRITESHEET
 	char_idle: {
